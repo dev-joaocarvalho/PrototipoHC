@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoeBem - Plataforma de Doações Diversificadas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e86de;
+            --secondary: #10ac84;
+            --tertiary: #e67e22;
+            --quaternary: #9b59b6;
+            --light: #f7f9fc;
+            --dark: #2d3436;
+            --gray: #636e72;
+            --border: #dfe6e9;
+            --shadow: rgba(149, 157, 165, 0.2);
+            --card-bg: #ffffff;
+            --danger: #ff6b6b;
+            --clothing: #3498db;
+            --education: #9b59b6;
+            --food: #e74c3c;
+            --reuse: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .nav-link i {
+            font-size: 18px;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a73e8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(46, 134, 222, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0e9d7a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-clothing {
+            background-color: var(--clothing);
+            color: white;
+        }
+        
+        .btn-education {
+            background-color: var(--education);
+            color: white;
+        }
+        
+        .btn-food {
+            background-color: var(--food);
+            color: white;
+        }
+        
+        .btn-reuse {
+            background-color: var(--reuse);
+            color: white;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: var(--gray);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Feed */
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .post-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .post-content {
+            padding: 20px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .post-user {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .post-time {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+        
+        .post-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .post-description {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-btn.primary {
+            background-color: rgba(46, 134, 222, 0.1);
+            color: var(--primary);
+        }
+        
+        .action-btn.primary:hover {
+            background-color: rgba(46, 134, 222, 0.2);
+        }
+        
+        .action-btn.secondary {
+            background-color: rgba(16, 172, 132, 0.1);
+            color: var(--secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            background-color: rgba(16, 172, 132, 0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo i {
+            color: var(--primary);
+            font-size: 24px;
+        }
+        
+        .footer-logo h3 {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+        }
+        
+        /* Post Detail */
+        .post-detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .post-detail-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .post-detail-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .post-detail-content {
+            padding: 30px;
+        }
+        
+        .post-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .post-detail-title {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .post-detail-description {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+        
+        .donation-type {
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .type-money {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .type-items {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #2980b9;
+        }
+        
+        .type-reuse {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #8e44ad;
+        }
+        
+        .type-volunteer {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+        
+        .items-needed {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .items-needed h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .item-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .item-quantity {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .donation-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .option-card {
+            flex: 1;
+            min-width: 200px;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .option-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .option-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                margin: 15px 0;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .post-detail-image {
+                height: 300px;
+            }
+            
+            .donation-options {
+                flex-direction: column;
+            }
+        }
+        
+        /* Create Post */
+        .create-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .create-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            padding: 30px;
+        }
+        
+        .donation-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .type-option {
+            padding: 15px 10px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .type-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(46, 134, 222, 0.1);
+        }
+        
+        .type-option i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .items-form {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .item-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .add-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background-color: var(--light);
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .auth-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .auth-tab {
+            padding: 15px 0;
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" id="homeLink">
+                    <i class="fas fa-hands-helping"></i>
+                    <h1>Doe<span>Bem</span></h1>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" id="homeNav">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a>
+                    <a href="#" class="nav-link" id="exploreNav">
+                        <i class="fas fa-search"></i>
+                        <span>Explorar</span>
+                    </a>
+                    <a href="#" class="nav-link" id="profileLink" style="display: none;">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="btn btn-primary" id="createBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>Criar Movimento</span>
+                    </button>
+                    <div id="userAvatar" style="display: none;">
+                        <div class="post-avatar" id="avatarInitials"></div>
+                    </div>
+                    <button class="btn btn-outline" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Entrar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page (Feed) -->
+        <div class="container" id="home-page">
+            <div class="page-title">
+                <h2>Movimentos de Doação</h2>
+                <p>Descubra e participe de causas que fazem a diferença na vida de quem precisa</p>
+            </div>
+            
+            <div class="feed-grid" id="feedContainer">
+                <!-- As postagens serão inseridas aqui pelo JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Post Detail Page -->
+        <div class="container" id="post-detail-page" style="display: none;">
+            <div class="post-detail-container">
+                <div class="post-detail-card">
+                    <img src="" alt="Imagem do movimento" class="post-detail-image" id="detailImage">
+                    <div class="post-detail-content">
+                        <div class="post-detail-header">
+                            <div class="post-avatar" id="detailAvatar"></div>
+                            <div>
+                                <div class="post-user" id="detailUser"></div>
+                                <div class="post-time" id="detailTime"></div>
+                            </div>
+                        </div>
+                        
+                        <h2 class="post-detail-title" id="detailTitle"></h2>
+                        <span class="donation-type" id="detailType"></span>
+                        <p class="post-detail-description" id="detailDescription"></p>
+                        
+                        <div class="items-needed" id="itemsNeededSection">
+                            <h3><i class="fas fa-box-open"></i> Itens Necessários</h3>
+                            <div class="items-list" id="itemsList">
+                                <!-- Itens serão inseridos aqui -->
+                            </div>
+                        </div>
+                        
+                        <div class="donation-options">
+                            <div class="option-card" id="donateItemsOption">
+                                <div class="option-icon">
+                                    <i class="fas fa-tshirt"></i>
+                                </div>
+                                <div class="option-title">Doar Itens</div>
+                                <p>Veja como e onde entregar os itens solicitados</p>
+                            </div>
+                            
+                            <div class="option-card" id="volunteerOption">
+                                <div class="option-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <div class="option-title">Ser Voluntário</div>
+                                <p>Contribua com seu tempo e habilidades</p>
+                            </div>
+                            
+                            <div class="option-card" id="shareOption">
+                                <div class="option-icon">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="option-title">Compartilhar</div>
+                                <p>Ajude a divulgar esta causa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create Post Page -->
+        <div class="container" id="create-page" style="display: none;">
+            <div class="create-container">
+                <div class="create-card">
+                    <h2 style="margin-bottom: 20px; text-align: center;">Criar novo movimento</h2>
+                    
+                    <div class="form-group">
+                        <label for="postTitle">Título do Movimento</label>
+                        <input type="text" id="postTitle" class="form-control" placeholder="Ex: Coleta de Casacos para Moradores de Rua" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postDescription">Descrição</label>
+                        <textarea id="postDescription" class="form-control" rows="5" placeholder="Descreva o propósito do movimento, quem será beneficiado e como as pessoas podem ajudar..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tipo de Doação</label>
+                        <div class="donation-type-selector">
+                            <div class="type-option" data-type="items">
+                                <i class="fas fa-tshirt"></i>
+                                Itens Físicos
+                            </div>
+                            <div class="type-option" data-type="reuse">
+                                <i class="fas fa-recycle"></i>
+                                Reutilização
+                            </div>
+                            <div class="type-option" data-type="volunteer">
+                                <i class="fas fa-hands-helping"></i>
+                                Voluntariado
+                            </div>
+                            <div class="type-option" data-type="money">
+                                <i class="fas fa-donate"></i>
+                                Doação Monetária
+                            </div>
+                        </div>
+                        <input type="hidden" id="donationType" value="">
+                    </div>
+                    
+                    <div class="items-form" id="itemsForm">
+                        <label>Itens Necessários</label>
+                        <div id="itemsContainer">
+                            <div class="item-form">
+                                <input type="text" class="form-control" placeholder="Nome do item (ex: Casaco)" required>
+                                <input type="number" class="form-control" placeholder="Quantidade" min="1" required>
+                            </div>
+                        </div>
+                        <div class="add-item" id="addItemBtn">
+                            <i class="fas fa-plus"></i>
+                            Adicionar outro item
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postLocation">Localização</label>
+                        <input type="text" id="postLocation" class="form-control" placeholder="Cidade, Estado ou endereço para entrega">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContact">Contato (Opcional)</label>
+                        <input type="text" id="postContact" class="form-control" placeholder="Telefone, e-mail ou rede social">
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button class="btn btn-outline" style="flex: 1;" id="cancelCreate">
+                            Cancelar
+                        </button>
+                        <button class="btn btn-primary" style="flex: 1;" id="publishPost">
+                            <i class="fas fa-paper-plane"></i>
+                            Publicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>DoeBem</h3>
+                    </div>
+                    <p>Conectando pessoas que querem ajudar com quem precisa de ajuda através de diversos tipos de doações.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <div class="footer-links">
+                        <a href="#" id="footerHome">Início</a>
+                        <a href="#" id="footerCreateBtn">Criar Movimento</a>
+                        <a href="#" id="footerLoginBtn">Entrar</a>
+                        <a href="#">Sobre Nós</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Tipos de Doação</h4>
+                    <div class="footer-links">
+                        <a href="#">Roupas e Agasalhos</a>
+                        <a href="#">Materiais Educativos</a>
+                        <a href="#">Reutilização de Itens</a>
+                        <a href="#">Voluntariado</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Ajuda</h4>
+                    <div class="footer-links">
+                        <a href="#">Como Funciona</a>
+                        <a href="#">Perguntas Frequentes</a>
+                        <a href="#">Contato</a>
+                        <a href="#">Termos de Uso</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 DoeBem. Todos os direitos reservados.</p>
+                <p>Faça a diferença na sua comunidade através de doações significativas</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Login/Cadastro -->
+    <div class="modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="loginTab">Login</div>
+                    <div class="auth-tab" id="registerTab">Cadastro</div>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="exemplo@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Digite sua senha" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Entrar
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>Esqueceu sua senha? <a href="#">Recuperar senha</a></p>
+                    </div>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="registerName">Nome Completo</label>
+                        <input type="text" id="registerName" class="form-control" placeholder="Seu nome completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">E-mail</label>
+                        <input type="email" id="registerEmail" class="form-control" placeholder="exemplo@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Senha</label>
+                        <input type="password" id="registerPassword" class="form-control" placeholder="Crie uma senha forte (mínimo 6 caracteres)" minlength="6" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirme sua Senha</label>
+                        <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Digite novamente sua senha" minlength="6" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                        <i class="fas fa-user-plus"></i>
+                        Criar Conta
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>Ao se cadastrar, você concorda com nossos <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados de exemplo com diversos tipos de doações
+        const sampleUsers = [
+            { id: 1, name: "João Silva", email: "joao@example.com", avatar: "JS" },
+            { id: 2, name: "Maria Oliveira", email: "maria@example.com", avatar: "MO" },
+            { id: 3, name: "Carlos Santos", email: "carlos@example.com", avatar: "CS" },
+            { id: 4, name: "Ana Pereira", email: "ana@example.com", avatar: "AP" }
+        ];
+
+        const samplePosts = [
+            {
+                id: 1,
+                userId: 2,
+                title: "Doação de Casacos para Moradores de Rua",
+                description: "Com a chegada do inverno, estamos arrecadando casacos, cobertores e agasalhos para pessoas em situação de rua. Sua doação pode aquecer quem mais precisa neste inverno.",
+                image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                type: "items",
+                items: [
+                    { name: "Casacos", quantity: 100, icon: "fa-tshirt" },
+                    { name: "Cobertores", quantity: 50, icon: "fa-bed" },
+                    { name: "Meias", quantity: 200, icon: "fa-socks" },
+                    { name: "Luvas", quantity: 100, icon: "fa-mitten" }
+                ],
+                location: "Centro Comunitário da Luz, São Paulo",
+                contact: "coletacasacos@exemplo.com",
+                likes: 87,
+                comments: 12,
+                shares: 24,
+                createdAt: "2023-07-03T09:15:00"
+            },
+            {
+                id: 2,
+                userId: 1,
+                title: "Reutilização de Apostilas Escolares",
+                description: "Estamos coletando apostilas escolares usadas para distribuir para estudantes de baixa renda. Livros didáticos, cadernos de exercícios e materiais de estudo em bom estado são bem-vindos!",
+                image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                type: "reuse",
+                items: [
+                    { name: "Apostilas", quantity: 300, icon: "fa-book" },
+                    { name: "Livros Didáticos", quantity: 150, icon: "fa-book-open" },
+                    { name: "Cadernos", quantity: 200, icon: "fa-bookmark" },
+                    { name: "Materiais Escolares", quantity: 100, icon: "fa-pencil-alt" }
+                ],
+                location: "Escola Municipal Santa Maria, Rio de Janeiro",
+                contact: "(21) 98765-4321",
+                likes: 112,
+                comments: 25,
+                shares: 51,
+                createdAt: "2023-06-20T13:40:00"
+            },
+            {
+                id: 3,
+                userId: 4,
+                title: "Arrecadação de Brinquedos para Crianças Carentes",
+                description: "Campanha para arrecadar brinquedos novos e usados em bom estado para crianças de comunidades carentes. Vamos levar alegria para quem mais precisa!",
+                image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                type: "reuse",
+                items: [
+                    { name: "Brinquedos Educativos", quantity: 100, icon: "fa-puzzle-piece" },
+                    { name: "Bonecas", quantity: 80, icon: "fa-child" },
+                    { name: "Carrinhos", quantity: 70, icon: "fa-car" },
+                    { name: "Livros Infantis", quantity: 120, icon: "fa-book" }
+                ],
+                location: "CRAS Centro, Belo Horizonte",
+                contact: "@doebrinquedos (Instagram)",
+                likes: 142,
+                comments: 28,
+                shares: 63,
+                createdAt: "2023-07-01T16:45:00"
+            },
+            {
+                id: 4,
+                userId: 3,
+                title: "Voluntários para Ação Comunitária",
+                description: "Precisamos de voluntários para ajudar em nossa ação mensal de distribuição de alimentos e roupas. Venha fazer parte desta corrente do bem!",
+                image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                type: "volunteer",
+                items: [
+                    { name: "Voluntários", quantity: 20, icon: "fa-hands-helping" },
+                    { name: "Veículos", quantity: 3, icon: "fa-truck" }
+                ],
+                location: "Parque Ibirapuera, São Paulo",
+                contact: "voluntarios@acaosocial.org.br",
+                likes: 76,
+                comments: 15,
+                shares: 32,
+                createdAt: "2023-06-28T11:20:00"
+            }
+        ];
+
+        // Estado da aplicação
+        let currentUser = null;
+        let posts = [];
+        let currentPost = null;
+
+        // Elementos do DOM
+        const homePage = document.getElementById('home-page');
+        const postDetailPage = document.getElementById('post-detail-page');
+        const createPage = document.getElementById('create-page');
+        const feedContainer = document.getElementById('feedContainer');
+        const authModal = document.getElementById('authModal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const createBtn = document.getElementById('createBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const cancelCreate = document.getElementById('cancelCreate');
+        const publishPost = document.getElementById('publishPost');
+        const userAvatar = document.getElementById('userAvatar');
+        const avatarInitials = document.getElementById('avatarInitials');
+        const profileLink = document.getElementById('profileLink');
+        const homeLink = document.getElementById('homeLink');
+        const homeNav = document.getElementById('homeNav');
+        const exploreNav = document.getElementById('exploreNav');
+        const footerHome = document.getElementById('footerHome');
+        const footerCreateBtn = document.getElementById('footerCreateBtn');
+        const footerLoginBtn = document.getElementById('footerLoginBtn');
+        const detailImage = document.getElementById('detailImage');
+        const detailAvatar = document.getElementById('detailAvatar');
+        const detailUser = document.getElementById('detailUser');
+        const detailTime = document.getElementById('detailTime');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailType = document.getElementById('detailType');
+        const detailDescription = document.getElementById('detailDescription');
+        const itemsList = document.getElementById('itemsList');
+        const itemsNeededSection = document.getElementById('itemsNeededSection');
+        const donateItemsOption = document.getElementById('donateItemsOption');
+        const volunteerOption = document.getElementById('volunteerOption');
+        const shareOption = document.getElementById('shareOption');
+        const typeOptions = document.querySelectorAll('.type-option');
+        const donationTypeInput = document.getElementById('donationType');
+        const itemsForm = document.getElementById('itemsForm');
+        const itemsContainer = document.getElementById('itemsContainer');
+        const addItemBtn = document.getElementById('addItemBtn');
+
+        // Funções auxiliares
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000); // diferença em segundos
+            
+            if (diff < 60) return 'Agora mesmo';
+            if (diff < 3600) return `${Math.floor(diff/60)} min atrás`;
+            if (diff < 86400) return `${Math.floor(diff/3600)} h atrás`;
+            
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'short'
+            });
+        }
+
+        function getTypeClass(type) {
+            const classes = {
+                items: 'type-items',
+                reuse: 'type-reuse',
+                volunteer: 'type-volunteer',
+                money: 'type-money'
+            };
+            return classes[type] || 'type-items';
+        }
+
+        function getTypeName(type) {
+            const names = {
+                items: 'Doação de Itens',
+                reuse: 'Reutilização',
+                volunteer: 'Voluntariado',
+                money: 'Doação Monetária'
+            };
+            return names[type] || type;
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                items: 'fa-box-open',
+                reuse: 'fa-recycle',
+                volunteer: 'fa-hands-helping',
+                money: 'fa-donate'
+            };
+            return icons[type] || 'fa-box-open';
+        }
+
+        function showPage(page) {
+            homePage.style.display = 'none';
+            postDetailPage.style.display = 'none';
+            createPage.style.display = 'none';
+            
+            page.style.display = 'block';
+            
+            // Atualizar navegação
+            homeNav.classList.remove('active');
+            exploreNav.classList.remove('active');
+            
+            if (page === homePage) {
+                homeNav.classList.add('active');
+            }
+        }
+
+        function showPostDetail(post) {
+            currentPost = post;
+            const user = sampleUsers.find(u => u.id === post.userId) || sampleUsers[0];
+            
+            detailImage.src = post.image;
+            detailAvatar.textContent = user.avatar;
+            detailAvatar.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+            detailUser.textContent = user.name;
+            detailTime.textContent = formatDate(post.createdAt);
+            detailTitle.textContent = post.title;
+            detailDescription.textContent = post.description;
+            
+            // Configurar tipo de doação
+            detailType.textContent = getTypeName(post.type);
+            detailType.className = `donation-type ${getTypeClass(post.type)}`;
+            
+            // Mostrar itens necessários
+            itemsList.innerHTML = '';
+            if (post.items && post.items.length > 0) {
+                post.items.forEach(item => {
+                    itemsList.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class="fas ${item.icon}"></i>
+                            </div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-quantity">${item.quantity} unidades</div>
+                        </div>
+                    `;
+                });
+                itemsNeededSection.style.display = 'block';
+            } else {
+                itemsNeededSection.style.display = 'none';
+            }
+            
+            showPage(postDetailPage);
+        }
+
+        function renderPosts() {
+            feedContainer.innerHTML = '';
+            
+            if (posts.length === 0) {
+                feedContainer.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <i class="fas fa-inbox" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3>Nenhum movimento encontrado</h3>
+                        <p>Seja o primeiro a criar um movimento de doação!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            posts.forEach(post => {
+                const user = sampleUsers.find(u => u.id === post.userId) || sampleUsers[0];
+                const createdAt = formatDate(post.createdAt);
+                const typeIcon = getTypeIcon(post.type);
+                const typeClass = getTypeClass(post.type);
+                
+                feedContainer.innerHTML += `
+                    <div class="post-card" onclick="showPostDetail(${JSON.stringify(post).replace(/"/g, '&quot;')})">
+                        <img src="${post.image}" alt="${post.title}" class="post-image">
+                        <div class="post-content">
+                            <div class="post-header">
+                                <div class="post-avatar" style="background-color: hsl(${Math.random() * 360}, 70%, 60%)">${user.avatar}</div>
+                                <div>
+                                    <div class="post-user">${user.name}</div>
+                                    <div class="post-time">${createdAt}</div>
+                                </div>
+                            </div>
+                            
+                            <span class="donation-type ${typeClass}" style="margin-bottom: 10px; display: inline-block;">
+                                <i class="fas ${typeIcon}"></i> ${getTypeName(post.type)}
+                            </span>
+                            
+                            <h3 class="post-title">${post.title}</h3>
+                            <p class="post-description">${post.description}</p>
+                            
+                            ${post.location ? `<p><i class="fas fa-map-marker-alt"></i> ${post.location}</p>` : ''}
+                            
+                            <div class="post-stats">
+                                <div class="post-stat">
+                                    <i class="fas fa-heart"></i>
+                                    ${post.likes}
+                                </div>
+                                <div class="post-stat">
+                                    <i class="fas fa-comment"></i>
+                                    ${post.comments}
+                                </div>
+                                <div class="post-stat">
+                                    <i class="fas fa-share"></i>
+                                    ${post.shares}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateUserUI() {
+            if (currentUser) {
+                loginBtn.style.display = 'none';
+                userAvatar.style.display = 'block';
+                profileLink.style.display = 'flex';
+                avatarInitials.textContent = currentUser.avatar;
+            } else {
+                loginBtn.style.display = 'flex';
+                userAvatar.style.display = 'none';
+                profileLink.style.display = 'none';
+            }
+        }
+
+        // Inicialização da aplicação
+        function initApp() {
+            // Carregar dados do localStorage ou usar dados de exemplo
+            const savedPosts = localStorage.getItem('doebem_posts');
+            posts = savedPosts ? JSON.parse(savedPosts) : [...samplePosts];
+            
+            // Verificar se o usuário está logado
+            const savedUser = localStorage.getItem('doebem_user');
+            currentUser = savedUser ? JSON.parse(savedUser) : null;
+            
+            // Atualizar UI do usuário
+            updateUserUI();
+            
+            // Renderizar posts
+            renderPosts();
+        }
+
+        // Event Listeners
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simulação de autenticação
+            const user = sampleUsers.find(u => u.email === email);
+            
+            if (user && password === '123456') { // Senha fixa para demonstração
+                currentUser = user;
+                localStorage.setItem('doebem_user', JSON.stringify(user));
+                authModal.style.display = 'none';
+                updateUserUI();
+            } else {
+                alert('E-mail ou senha incorretos. Tente novamente.');
+            }
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres!');
+                return;
+            }
+            
+            // Criar novo usuário
+            const newUser = {
+                id: sampleUsers.length + 1,
+                name,
+                email,
+                avatar: name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+            };
+            
+            currentUser = newUser;
+            localStorage.setItem('doebem_user', JSON.stringify(newUser));
+            authModal.style.display = 'none';
+            updateUserUI();
+        });
+
+        createBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            showPage(createPage);
+        });
+
+        loginBtn.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+        });
+
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(homePage);
+        });
+
+        homeNav.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(homePage);
+        });
+
+        exploreNav.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Para este exemplo, a página de exploração é a mesma da home
+            showPage(homePage);
+        });
+
+        footerHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(homePage);
+        });
+
+        footerLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.style.display = 'flex';
+        });
+
+        footerCreateBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                authModal.style.display = 'flex';
+                return;
+            }
+            showPage(createPage);
+        });
+
+        cancelCreate.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(homePage);
+        });
+
+        // Seleção de tipo de doação
+        typeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remover seleção de todos
+                typeOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Selecionar este
+                option.classList.add('selected');
+                
+                // Atualizar input oculto
+                const type = option.getAttribute('data-type');
+                donationTypeInput.value = type;
+                
+                // Mostrar/ocultar formulário de itens
+                if (type === 'items' || type === 'reuse') {
+                    itemsForm.style.display = 'block';
+                } else {
+                    itemsForm.style.display = 'none';
+                }
+            });
+        });
+
+        // Adicionar campo de item
+        addItemBtn.addEventListener('click', () => {
+            const newItem = document.createElement('div');
+            newItem.className = 'item-form';
+            newItem.innerHTML = `
+                <input type="text" class="form-control" placeholder="Nome do item" required>
+                <input type="number" class="form-control" placeholder="Quantidade" min="1" required>
+            `;
+            itemsContainer.appendChild(newItem);
+        });
+
+        publishPost.addEventListener('click', () => {
+            const title = document.getElementById('postTitle').value;
+            const description = document.getElementById('postDescription').value;
+            const type = donationTypeInput.value;
+            const location = document.getElementById('postLocation').value;
+            const contact = document.getElementById('postContact').value;
+            
+            if (!title || !description || !type) {
+                alert('Preencha os campos obrigatórios: Título, Descrição e Tipo de Doação');
+                return;
+            }
+            
+            // Coletar itens se necessário
+            let items = [];
+            if (type === 'items' || type === 'reuse') {
+                const itemForms = itemsContainer.querySelectorAll('.item-form');
+                itemForms.forEach(form => {
+                    const inputs = form.querySelectorAll('input');
+                    if (inputs[0].value && inputs[1].value) {
+                        items.push({
+                            name: inputs[0].value,
+                            quantity: parseInt(inputs[1].value),
+                            icon: 'fa-box' // Ícone padrão
+                        });
+                    }
+                });
+                
+                if (items.length === 0) {
+                    alert('Adicione pelo menos um item necessário');
+                    return;
+                }
+            }
+            
+            const newPost = {
+                id: posts.length + 1,
+                userId: currentUser.id,
+                title,
+                description,
+                image: 'https://images.unsplash.com/photo-1500993855538-c96a14b0d51c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                type,
+                items,
+                location: location || null,
+                contact: contact || null,
+                likes: 0,
+                comments: 0,
+                shares: 0,
+                createdAt: new Date().toISOString()
+            };
+            
+            posts.unshift(newPost);
+            localStorage.setItem('doebem_posts', JSON.stringify(posts));
+            
+            renderPosts();
+            showPage(homePage);
+            
+            // Resetar formulário
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postDescription').value = '';
+            document.getElementById('postLocation').value = '';
+            document.getElementById('postContact').value = '';
+            donationTypeInput.value = '';
+            typeOptions.forEach(opt => opt.classList.remove('selected'));
+            itemsForm.style.display = 'none';
+            itemsContainer.innerHTML = '<div class="item-form"><input type="text" class="form-control" placeholder="Nome do item" required><input type="number" class="form-control" placeholder="Quantidade" min="1" required></div>';
+        });
+
+        // Eventos da página de detalhes
+        donateItemsOption.addEventListener('click', () => {
+            if (currentPost.contact) {
+                alert(`Para doar itens, entre em contato por: ${currentPost.contact}\nOu entregue no local: ${currentPost.location}`);
+            } else {
+                alert(`Entregue os itens no local: ${currentPost.location}`);
+            }
+        });
+
+        volunteerOption.addEventListener('click', () => {
+            if (currentPost.contact) {
+                alert(`Para ser voluntário, entre em contato por: ${currentPost.contact}`);
+            } else {
+                alert('Entre em contato com o organizador para ser voluntário');
+            }
+        });
+
+        shareOption.addEventListener('click', () => {
+            alert('Compartilhe este movimento nas suas redes sociais!');
+        });
+
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.style.display = 'none';
+            }
+        });
+
+        // Inicializar aplicação
+        window.addEventListener('DOMContentLoaded', initApp);
+        
+        // Expor função para o escopo global
+        window.showPostDetail = showPostDetail;
+    </script>
+</body>
+</html>
